@@ -1,10 +1,25 @@
+/**
+ * Copyright (c) 2024 - present OpenTiny HUICharts Authors.
+ * Copyright (c) 2024 - present Huawei Cloud Computing Technologies Co., Ltd.
+ *
+ * Use of this source code is governed by an MIT-style license.
+ *
+ * THE OPEN SOURCE SOFTWARE IN THIS PRODUCT IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL,
+ * BUT WITHOUT ANY WARRANTY, WITHOUT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS FOR
+ * A PARTICULAR PURPOSE. SEE THE APPLICABLE LICENSES FOR MORE DETAILS.
+ *
+ */
 import { getTextHeight, removeOuterSpaces } from '../../../util/dom';
 import { percentToDecimal } from '../../../util/math';
 
 function updateTitle(position, chartInstance, baseOption, iChartOption) {
   // 获取圆环主副文本
-  baseOption.title.text = removeOuterSpaces(baseOption.title.text);
-  baseOption.title.subtext = removeOuterSpaces(baseOption.title.subtext);
+  if (typeof baseOption.title?.text === 'string') {
+    baseOption.title.text = removeOuterSpaces(baseOption.title.text);
+  }
+  if (typeof baseOption.title?.subtext === 'string') {
+    baseOption.title.subtext = removeOuterSpaces(baseOption.title.subtext);
+  }
   const textContent = baseOption.title.text;
   const subtextContent = baseOption.title.subtext;
   const textStyle = baseOption.title.textStyle;
@@ -61,8 +76,8 @@ function updateTitle(position, chartInstance, baseOption, iChartOption) {
     // 只有副文本存在
     topOffset = `${(chartCenterY - itemGap - subtextHeight / 2) - offset}`;
   }
-  baseOption.title.left = iChartOption.title.left || leftOffset;
-  baseOption.title.top = iChartOption.title.top || topOffset;
+  baseOption.title.left = iChartOption?.title?.left || leftOffset;
+  baseOption.title.top = iChartOption?.title?.top || topOffset;
 }
 
 // 判断文本是否为富文本格式

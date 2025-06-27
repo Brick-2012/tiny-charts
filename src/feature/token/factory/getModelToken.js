@@ -38,6 +38,7 @@ function getModelToken(aliasToken) {
     axisTickLineType,
     axisSplitLineType,
     axisTickLineWidth,
+    axisTickLineLength,
     axisSplitLineWidth,
     axisPointerLineType,
     axisPointerLineWidth,
@@ -47,6 +48,7 @@ function getModelToken(aliasToken) {
     legendSpace,
     legendItemSize,
     legendCircleItemSize,
+    legendTextAndIconSpace, 
     containerGap,
     lineWidthSecondary,
     borderWidthNone,
@@ -134,7 +136,7 @@ function getModelToken(aliasToken) {
     // 图例富文本数值字号
     legendTextValueFontSize: textFontSize,
     // 图例文本的padding
-    legendTextPadding: [containerGap - 1, 0, 0, 0],
+    legendTextPadding: [containerGap - 1, 0, 0, legendTextAndIconSpace],
     // 图例每项之间的间隔
     legendItemGap: legendSpace,
     // 圆形图例时每项的宽度
@@ -183,6 +185,8 @@ function getModelToken(aliasToken) {
     xAxisTickLineColor: colorAxisTickLine,
     // x轴刻度线粗细
     xAxisTickLineWidth: axisTickLineWidth,
+    // x轴轴刻度线长度
+    xAxisTickLineLength: axisTickLineLength,
     // x轴刻度线类别
     xAxisTickLineType: axisTickLineType,
     // x轴分隔线颜色
@@ -213,6 +217,8 @@ function getModelToken(aliasToken) {
     yAxisTickLineColor: colorAxisTickLine,
     // y轴刻度线粗细
     yAxisTickLineWidth: axisTickLineWidth,
+    // y轴刻度线长度
+    yAxisTickLineLength: axisTickLineLength,
     // y轴刻度线类别
     yAxisTickLineType: axisTickLineType,
     // y轴分隔线颜色

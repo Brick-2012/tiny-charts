@@ -132,7 +132,7 @@ export default class CoreChart extends BaseChart {
     // resize节流函数
     this.throttleResize = initOpts.resizeThrottle === 0 ? this.setResize.bind(this) : throttle(initOpts.resizeThrottle, this.setResize.bind(this));
     // 容器大小变化监听
-    initOpts.domResize && this.setResizeObserver();
+    this.dom && initOpts.domResize && this.setResizeObserver();
     // 页面大小变化监听
     initOpts.windowResize && window.addEventListener('resize', this.throttleResize);
   }
@@ -149,14 +149,16 @@ export default class CoreChart extends BaseChart {
   // 图表宽高自适应
   setResize() {
     this.mediaScreenObserver && this.mediaScreenObserver.observe();
-    this.echartsIns && this.echartsIns.resize && this.echartsIns.resize({ width: 'auto' });
-    this.ichartsIns && this.ichartsIns.resize && this.ichartsIns.resize((resizedOption) => {
+    this.echartsIns && this.echartsIns._dom && this.echartsIns.resize && this.echartsIns.resize({ width: 'auto' });
+    this.echartsIns && this.echartsIns._dom && this.ichartsIns && this.ichartsIns.resize && this.ichartsIns.resize((resizedOption) => {
       this.setOption(resizedOption);
     });
   }
 
   // 传入简化后的icharts-option
-  setSimpleOption(ChartClass, iChartOption, plugins = {}, isInit = true) {
+  setSimpleOption(ChartClass, option, plugins = {}, isInit = true) {
+    let iChartOption = {};
+    merge(iChartOption, option);
     iChartOption = xssOption(iChartOption);
     // 设定主题、自适应图表
     if (isInit) {
@@ -172,7 +174,7 @@ export default class CoreChart extends BaseChart {
       this.redirectSelfChart(ChartClass, iChartOption, plugins);
       return;
     }
-    this.initIChartOption = cloneDeep(iChartOption);
+    this.initIChartOption = option;
     this.plugins = plugins;
     this.chartClass = ChartClass;
     this.iChartOption = iChartOption;
@@ -267,17 +269,18 @@ export default class CoreChart extends BaseChart {
   }
 
   // 图表刷新，包括刷新配置和数据
-  refresh(iChartOption) {
-    this.iChartOption = iChartOption;
-    this.setSimpleOption(this.chartClass, iChartOption, this.plugins);
+  refresh(option) {
+    this.iChartOption = {};
+    merge(this.iChartOption, option);
+    this.setSimpleOption(this.chartClass, this.iChartOption, this.plugins);
     this.render();
     this.mediaScreenObserver && this.mediaScreenObserver.refresh();
   }
 
   // 图表刷新，仅刷新数据
   refreshData(data) {
-    this.iChartOption.data = data;
-    this.refresh(this.iChartOption);
+    this.initIChartOption.data = data;
+    this.refresh(this.initIChartOption);
   }
 
   // 图表渲染完成时回调
